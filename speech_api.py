@@ -17,15 +17,16 @@ def transcribe():
 
         audio = request.files["audio"]
 
-        # Save file to temp location
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
+        # 🔥 Use original file extension (e.g., .mp3)
+        suffix = os.path.splitext(audio.filename)[1] or ".webm"
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             temp_path = tmp.name
             audio.save(temp_path)
 
-        # Transcribe audio
+        # 🧠 Transcribe using Whisper
         result = model.transcribe(temp_path)
 
-        # Delete file after transcription is definitely finished
+        # 🧹 Delete temp file
         try:
             os.remove(temp_path)
         except Exception as e:
@@ -40,7 +41,5 @@ def transcribe():
 
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5001))
     app.run(host="0.0.0.0", port=port)
-
