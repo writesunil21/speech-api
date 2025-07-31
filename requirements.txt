@@ -2,3 +2,5 @@ flask
 flask-cors
 openai-whisper
 torch
+pytesseract
+pillow
